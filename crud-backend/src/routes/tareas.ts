@@ -13,4 +13,21 @@ router.get('/', async (req, res) => {
     }
 });
 
+
+router.post('/', async (req, res) => {
+    const { titulo, descripcion } = req.body;
+  
+    try {
+      const nuevaTarea = await db('tareas').insert({
+        titulo,
+        descripcion
+      }).returning('*'); 
+  
+      res.status(201).json(nuevaTarea[0]);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al crear tarea' });
+    }
+  });
+
 export default router;
